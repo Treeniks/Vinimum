@@ -152,6 +152,22 @@ class EmptyLineDownMotion(Motion):
     def select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True, "extend": True})
 
+# _
+class ToBOLMotion(Motion):
+    def move(self):
+        self.view.run_command("move_to", {"to": "bol"})
+
+    def select(self):
+        self.view.run_command("move_to", {"to": "bol", "extend": True})
+
+# 0
+class ToHardBOLMotion(Motion):
+    def move(self):
+        self.view.run_command("move_to", {"to": "hardbol"})
+
+    def select(self):
+        self.view.run_command("move_to", {"to": "hardbol", "extend": True})
+
 # f
 class FindInLineMotion(Motion):
     def __init__(self, view, character):
@@ -178,7 +194,7 @@ class FindInLineMotion(Motion):
             s = self.view.substr(Region(r.a, line.b))
             index = s.find(self.character, 1)
             if index == -1: new_sel.append(r)
-            else: new_sel.append(Region(r.a, r.a + index))
+            else: new_sel.append(Region(r.a, r.a + index + 1))
         sel.clear()
         sel.add_all(new_sel)
 
@@ -212,22 +228,6 @@ class FindInLineBackwardsMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-# _
-class ToBOLMotion(Motion):
-    def move(self):
-        self.view.run_command("move_to", {"to": "bol"})
-
-    def select(self):
-        self.view.run_command("move_to", {"to": "bol", "extend": True})
-
-# 0
-class ToHardBOLMotion(Motion):
-    def move(self):
-        self.view.run_command("move_to", {"to": "hardbol"})
-
-    def select(self):
-        self.view.run_command("move_to", {"to": "hardbol", "extend": True})
-
 # t
 class ToInLineMotion(Motion):
     def __init__(self, view, character):
@@ -254,7 +254,7 @@ class ToInLineMotion(Motion):
             s = self.view.substr(Region(r.a, line.b))
             index = s.find(self.character, 1)
             if index == -1: new_sel.append(r)
-            else: new_sel.append(Region(r.a, r.a + index - 1))
+            else: new_sel.append(Region(r.a, r.a + index))
         sel.clear()
         sel.add_all(new_sel)
 
