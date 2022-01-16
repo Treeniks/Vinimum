@@ -42,11 +42,25 @@ def reset():
     g_command = ""
     update_visuals()
 
+def remove_selection(view):
+    sel = view.sel()
+    new_sel = []
+    for r in sel:
+        if r.b < r.a:
+            new_sel.append(Region(r.b))
+        else:
+            new_sel.append(Region(r.b - 1))
+    sel.clear()
+    sel.add_all(new_sel)
+
 def enter_command_mode(view):
     global g_state
 
     g_state = State.COMMAND
-    motions.LeftMotion(view).move()
+    if view.has_non_empty_selection_region():
+        remove_selection(view)
+    else:
+        motions.LeftMotion(view).move()
     reset()
 
 def enter_sublime_mode():

@@ -10,6 +10,7 @@ class Action:
     def double(self):
         pass
 
+# d
 class DeleteAction(Action):
     def run(self, select):
         select()
@@ -19,6 +20,7 @@ class DeleteAction(Action):
     def double(self):
         self.run(lambda: self.view.run_command("expand_selection", {"to": "line"}))
 
+# c
 class ChangeAction(Action):
     def run(self, select):
         select()
@@ -36,7 +38,18 @@ class ChangeAction(Action):
         self.run(self.__select)
         self.view.run_command("reindent")
 
+# v
+# while Vinimum doesn't have a full Visual Mode
+# this v action can be used to select a motion or text object
+class VisualAction(Action):
+    def run(self, select):
+        select()
+
+    def double(self):
+        self.view.run_command("expand_selection", {"to": "line"})
+
 actions = {
     "d": DeleteAction,
     "c": ChangeAction,
+    "v": VisualAction,
 }
