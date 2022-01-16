@@ -1,8 +1,7 @@
-from sublime import View
 import Vinimum.vinimum as vinimum
 
 class Action:
-    def __init__(self, view: View):
+    def __init__(self, view):
         self.view = view
 
     def run(self, select):

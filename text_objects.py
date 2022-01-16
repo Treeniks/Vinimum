@@ -1,5 +1,4 @@
-from sublime import View, Region
-from Vinimum.actions import Actionable
+from sublime import Region
 
 from enum import Enum
 
@@ -7,8 +6,8 @@ class Modifier(Enum):
     INNER = 0
     OUTER = 1
 
-class TextObject(Actionable):
-    def __init__(self, view: View, modifier: Modifier):
+class TextObject():
+    def __init__(self, view, modifier):
         self.view = view
         self.modifier = modifier
 

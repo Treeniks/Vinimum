@@ -1,8 +1,8 @@
-from sublime import View
+import sublime
 import Vinimum.vinimum as vinimum
 
 class Command:
-    def __init__(self, view: View):
+    def __init__(self, view):
         self.view = view
 
     def run(self):

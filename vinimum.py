@@ -1,11 +1,11 @@
 import sublime
-from sublime import Edit, View, Region
+from sublime import Region
 from sublime_plugin import TextCommand, EventListener
 
-from Vinimum.actions import actions
-from Vinimum.commands import commands
-from Vinimum.motions import motions, LeftMotion
-from Vinimum.text_objects import modifiers, text_objects
+import Vinimum.actions as actions
+import Vinimum.commands as commands
+import Vinimum.motions as motions
+import Vinimum.text_objects as text_objects
 
 from enum import Enum
 
@@ -42,11 +42,11 @@ def reset():
     g_command = ""
     update_visuals()
 
-def enter_command_mode(view: View):
+def enter_command_mode(view):
     global g_state
 
     g_state = State.COMMAND
-    LeftMotion(view).move()
+    motions.LeftMotion(view).move()
     reset()
 
 def enter_sublime_mode():
@@ -55,54 +55,44 @@ def enter_sublime_mode():
     g_state = State.SUBLIME
     reset()
 
-def eval(view: View):
+def eval(view):
     global g_command, g_prev_command
 
     try:
         a = g_command[0]
-        if a == ".":
+        if a == ".": # repeat command
             g_command = g_prev_command
             a = g_command[0]
-        # r is a special command
-        if a == "r":
+        if a == "r": # r is a special command
             b = g_command[1]
             view.run_command("vnm_replace_character", {"character": b})
-        # f/F/t/T are special motions
-        elif a in "fFtT":
+        elif a in "fFtT": # f/F/t/T are special motions
             b = g_command[1]
-            motion = motions[a](view, b)
+            motion = motions.motions[a](view, b)
             motion.move()
-        elif a in commands:
-            # e.g. 'i'
-            command = commands[a](view)
+        elif a in commands.commands: # e.g. 'i'
+            command = commands.commands[a](view)
             command.run()
-        elif a in motions:
-            # e.g. 'w'
-            motion = motions[a](view)
+        elif a in motions.motions: # e.g. 'w'
+            motion = motions.motions[a](view)
             motion.move()
-        elif a in actions:
-            # e.g. 'd'
-            action = actions[a](view)
+        elif a in actions.actions: # e.g. 'd'
+            action = actions.actions[a](view)
             b = g_command[1]
-            if b == a:
-                # e.g. 'dd'
+            if b == a: # e.g. 'dd'
                 action.double()
-            # f/F/t/T are special motions
-            elif b in "fFtT":
+            elif b in "fFtT": # f/F/t/T are special motions
                 c = g_command[2]
-                motion = motions[b](view, c)
+                motion = motions.motions[b](view, c)
                 action.run(motion.select)
-            elif b in motions:
-                # e.g. 'dw'
-                motion = motions[b](view)
+            elif b in motions.motions: # e.g. 'dw'
+                motion = motions.motions[b](view)
                 action.run(motion.select)
-            elif b in modifiers:
-                # e.g. 'di'
-                modifier = modifiers[b]
+            elif b in text_objects.modifiers: # e.g. 'di'
+                modifier = text_objects.modifiers[b]
                 c = g_command[2]
-                if c in text_objects:
-                    # e.g. 'diw'
-                    text_object = text_objects[c](view, modifier)
+                if c in text_objects.text_objects: # e.g. 'diw'
+                    text_object = text_objects.text_objects[c](view, modifier)
                     action.run(text_object.select)
         reset()
     except IndexError:
@@ -166,7 +156,7 @@ class VnmEventListener(EventListener):
             enter_sublime_mode()
 
 class VnmFeedInput(TextCommand):
-    def run(self, edit: Edit, key: str):
+    def run(self, edit, key: str):
         global g_command
 
         g_command += key
@@ -175,22 +165,22 @@ class VnmFeedInput(TextCommand):
         eval(self.view)
 
 class VnmEnterCommandMode(TextCommand):
-    def run(self, edit: Edit):
+    def run(self, edit):
         enter_command_mode(self.view)
 
 # see https://github.com/sublimehq/sublime_text/issues/2198
 class VnmOverlayWorkaround(TextCommand):
-    def run(self, edit: Edit, overlay, show_files=False, text=""):
+    def run(self, edit, overlay, show_files=False, text=""):
         enter_sublime_mode()
         self.view.window().run_command("show_overlay", {"overlay": overlay, "show_files": show_files, "text": text})
 
 class VnmResetCommandCommand(TextCommand):
-    def run(self, edit: Edit):
+    def run(self, edit):
         reset()
 
 # assumes that the selections are points
 class VnmReplaceCharacter(TextCommand):
-    def run(self, edit: Edit, character):
+    def run(self, edit, character):
         sel = self.view.sel()
         for r in sel:
             self.view.replace(edit, Region(r.a, r.b + 1), character)

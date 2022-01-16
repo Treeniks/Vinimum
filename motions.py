@@ -1,8 +1,7 @@
-from sublime import View, Region
-from Vinimum.actions import Actionable
+from sublime import Region
 
-class Motion(Actionable):
-    def __init__(self, view: View):
+class Motion():
+    def __init__(self, view):
         self.view = view
 
     def move(self):
