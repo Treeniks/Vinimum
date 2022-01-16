@@ -42,6 +42,28 @@ class BigBackMotion(Motion):
     def select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": False, "extend": True})
 
+# e
+class WordEndMotion(Motion):
+    def move(self):
+        RightMotion(self.view).move()
+        self.view.run_command("move", {"by": "stops", "word_end": True, "punct_end": True, "empty_line": True, "forward": True})
+        LeftMotion(self.view).move()
+
+    def select(self):
+        RightMotion(self.view).select()
+        self.view.run_command("move", {"by": "stops", "word_end": True, "punct_end": True, "empty_line": True, "forward": True, "extend": True})
+
+# E
+class BigWordEndMotion(Motion):
+    def move(self):
+        RightMotion(self.view).move()
+        self.view.run_command("move", {"by": "stops", "word_end": True, "empty_line": True, "separators": "", "forward": True})
+        LeftMotion(self.view).move()
+
+    def select(self):
+        RightMotion(self.view).select()
+        self.view.run_command("move", {"by": "stops", "word_end": True, "empty_line": True, "separators": "", "forward": True, "extend": True})
+
 # j
 class LeftMotion(Motion):
     def move(self):
@@ -255,6 +277,8 @@ motions = {
     "W": BigWordMotion,
     "b": BackMotion,
     "B": BigBackMotion,
+    "e": WordEndMotion,
+    "E": BigWordEndMotion,
     "h": LeftMotion,
     "j": DownMotion,
     "k": UpMotion,
