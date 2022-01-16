@@ -79,6 +79,7 @@ def eval(view):
         if a == "r": # r is a special command
             b = g_command[1]
             view.run_command("vnm_replace_character", {"character": b})
+            g_prev_command = g_command
         elif a in "fFtT": # f/F/t/T are special motions
             b = g_command[1]
             motion = motions.motions[a](view, b)
