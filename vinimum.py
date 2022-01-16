@@ -38,7 +38,6 @@ def update_visuals():
 def reset():
     global g_command, g_prev_command
 
-    g_prev_command = g_command
     g_command = ""
     update_visuals()
 
@@ -61,13 +60,13 @@ def enter_command_mode(view):
         remove_selection(view)
     else:
         motions.LeftMotion(view).move()
-    reset()
+    update_visuals()
 
 def enter_sublime_mode():
     global g_state
 
     g_state = State.SUBLIME
-    reset()
+    update_visuals()
 
 def eval(view):
     global g_command, g_prev_command
@@ -108,6 +107,7 @@ def eval(view):
                 if c in text_objects.text_objects: # e.g. 'diw'
                     text_object = text_objects.text_objects[c](view, modifier)
                     action.run(text_object.select)
+            g_prev_command = g_command
         reset()
     except IndexError:
         pass
@@ -117,6 +117,7 @@ class VnmEventListener(EventListener):
         global g_state
 
         enter_sublime_mode()
+        reset()
 
     def on_activated(self, view):
         global g_state
