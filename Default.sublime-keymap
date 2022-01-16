@@ -1,8 +1,120 @@
 [
     { "keys": ["ctrl+["], "command": "vnm_enter_command_mode"},
 
+    { "keys": ["escape"], "command": "vnm_reset_command", "context": [{"key": "vnm.command_mode"}, {"key": "vnm.command_in_process"}]},
+
+    // show_overlay commands overwrite because the command is not trackable in code
+    // see https://github.com/sublimehq/sublime_text/issues/2198
+    {
+        "keys": ["ctrl+p"],
+        "command": "vnm_overlay_workaround",
+        "args": {"overlay": "goto", "show_files": true},
+        "context": [{"key": "vnm.command_mode"}],
+    },
+    {
+        "keys": ["ctrl+shift+p"],
+        "command": "vnm_overlay_workaround",
+        "args": {"overlay": "command_palette"},
+        "context": [{"key": "vnm.command_mode"}],
+    },
+    {
+        "keys": ["ctrl+r"],
+        "command": "vnm_overlay_workaround",
+        "args": {"overlay": "goto", "text": "@"},
+        "context": [{"key": "vnm.command_mode"}],
+    },
+    {
+        "keys": ["ctrl+g"],
+        "command": "vnm_overlay_workaround",
+        "args": {"overlay": "goto", "text": ":"},
+        "context": [{"key": "vnm.command_mode"}],
+    },
+    {
+        "keys": ["ctrl+;"],
+        "command": "vnm_overlay_workaround",
+        "args": {"overlay": "goto", "text": "#"},
+        "context": [{"key": "vnm.command_mode"}],
+    },
+
+    // move through auto complete suggestions with ctrl+p/n
+    {
+        "keys": ["ctrl+p"],
+        "command": "move",
+        "args": {"by": "lines", "forward": false},
+        "context": [{"key": "auto_complete_visible"}]
+    },
+    {
+        "keys": ["ctrl+n"],
+        "command": "move",
+        "args": {"by": "lines", "forward": true},
+        "context": [{"key": "auto_complete_visible"}]
+    },
+
+    // move through command palette options with ctrl+p/n
+    {
+        "keys": ["ctrl+p"],
+        "command": "move",
+        "args": {"by": "lines", "forward": false},
+        "context": [{"key": "overlay_has_focus"}],
+    },
+    {
+        "keys": ["ctrl+n"],
+        "command": "move",
+        "args": {"by": "lines", "forward": true},
+        "context": [{"key": "overlay_has_focus"}],
+    },
+
     { "keys": ["a"], "command": "vnm_feed_input", "args": {"key": "a"}, "context": [{"key": "vnm.command_mode"}]},
-    { "keys": ["i"], "command": "vnm_feed_input", "args": {"key": "i"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["b"], "command": "vnm_feed_input", "args": {"key": "b"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["c"], "command": "vnm_feed_input", "args": {"key": "c"}, "context": [{"key": "vnm.command_mode"}]},
     { "keys": ["d"], "command": "vnm_feed_input", "args": {"key": "d"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["e"], "command": "vnm_feed_input", "args": {"key": "e"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["f"], "command": "vnm_feed_input", "args": {"key": "f"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["g"], "command": "vnm_feed_input", "args": {"key": "g"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["h"], "command": "vnm_feed_input", "args": {"key": "h"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["i"], "command": "vnm_feed_input", "args": {"key": "i"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["j"], "command": "vnm_feed_input", "args": {"key": "j"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["k"], "command": "vnm_feed_input", "args": {"key": "k"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["l"], "command": "vnm_feed_input", "args": {"key": "l"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["m"], "command": "vnm_feed_input", "args": {"key": "m"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["n"], "command": "vnm_feed_input", "args": {"key": "n"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["o"], "command": "vnm_feed_input", "args": {"key": "o"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["p"], "command": "vnm_feed_input", "args": {"key": "p"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["q"], "command": "vnm_feed_input", "args": {"key": "q"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["r"], "command": "vnm_feed_input", "args": {"key": "r"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["s"], "command": "vnm_feed_input", "args": {"key": "s"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["t"], "command": "vnm_feed_input", "args": {"key": "t"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["u"], "command": "vnm_feed_input", "args": {"key": "u"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["v"], "command": "vnm_feed_input", "args": {"key": "v"}, "context": [{"key": "vnm.command_mode"}]},
     { "keys": ["w"], "command": "vnm_feed_input", "args": {"key": "w"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["x"], "command": "vnm_feed_input", "args": {"key": "x"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["y"], "command": "vnm_feed_input", "args": {"key": "y"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["z"], "command": "vnm_feed_input", "args": {"key": "z"}, "context": [{"key": "vnm.command_mode"}]},
+
+    { "keys": ["A"], "command": "vnm_feed_input", "args": {"key": "A"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["B"], "command": "vnm_feed_input", "args": {"key": "B"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["C"], "command": "vnm_feed_input", "args": {"key": "C"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["D"], "command": "vnm_feed_input", "args": {"key": "D"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["E"], "command": "vnm_feed_input", "args": {"key": "E"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["F"], "command": "vnm_feed_input", "args": {"key": "F"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["G"], "command": "vnm_feed_input", "args": {"key": "G"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["H"], "command": "vnm_feed_input", "args": {"key": "H"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["I"], "command": "vnm_feed_input", "args": {"key": "I"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["J"], "command": "vnm_feed_input", "args": {"key": "J"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["K"], "command": "vnm_feed_input", "args": {"key": "K"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["L"], "command": "vnm_feed_input", "args": {"key": "L"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["M"], "command": "vnm_feed_input", "args": {"key": "M"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["N"], "command": "vnm_feed_input", "args": {"key": "N"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["O"], "command": "vnm_feed_input", "args": {"key": "O"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["P"], "command": "vnm_feed_input", "args": {"key": "P"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["Q"], "command": "vnm_feed_input", "args": {"key": "Q"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["R"], "command": "vnm_feed_input", "args": {"key": "R"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["S"], "command": "vnm_feed_input", "args": {"key": "S"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["T"], "command": "vnm_feed_input", "args": {"key": "T"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["U"], "command": "vnm_feed_input", "args": {"key": "U"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["V"], "command": "vnm_feed_input", "args": {"key": "V"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["W"], "command": "vnm_feed_input", "args": {"key": "W"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["X"], "command": "vnm_feed_input", "args": {"key": "X"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["Y"], "command": "vnm_feed_input", "args": {"key": "Y"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["Z"], "command": "vnm_feed_input", "args": {"key": "Z"}, "context": [{"key": "vnm.command_mode"}]},
 ]
