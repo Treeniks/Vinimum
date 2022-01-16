@@ -15,6 +15,7 @@ class State(Enum):
 
 g_state = State.SUBLIME
 g_command = ""
+g_prev_command = ""
 
 def update_visuals():
     global g_state, g_command
@@ -35,8 +36,9 @@ def update_visuals():
             view.set_status("_vinimum", desc)
 
 def reset():
-    global g_command
+    global g_command, g_prev_command
 
+    g_prev_command = g_command
     g_command = ""
     update_visuals()
 
@@ -54,10 +56,13 @@ def enter_sublime_mode():
     reset()
 
 def eval(view: View):
-    global g_command
+    global g_command, g_prev_command
 
     try:
         a = g_command[0]
+        if a == ".":
+            g_command = g_prev_command
+            a = g_command[0]
         # r is a special command
         if a == "r":
             b = g_command[1]
