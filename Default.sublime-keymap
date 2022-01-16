@@ -1,0 +1,8 @@
+[
+    { "keys": ["ctrl+["], "command": "vnm_enter_command_mode"},
+
+    { "keys": ["a"], "command": "vnm_feed_input", "args": {"key": "a"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["i"], "command": "vnm_feed_input", "args": {"key": "i"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["d"], "command": "vnm_feed_input", "args": {"key": "d"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["w"], "command": "vnm_feed_input", "args": {"key": "w"}, "context": [{"key": "vnm.command_mode"}]},
+]
