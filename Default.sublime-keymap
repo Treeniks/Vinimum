@@ -118,7 +118,19 @@
     { "keys": ["Y"], "command": "vnm_feed_input", "args": {"key": "Y"}, "context": [{"key": "vnm.command_mode"}]},
     { "keys": ["Z"], "command": "vnm_feed_input", "args": {"key": "Z"}, "context": [{"key": "vnm.command_mode"}]},
 
+    { "keys": ["1"], "command": "vnm_feed_input", "args": {"key": "1"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["2"], "command": "vnm_feed_input", "args": {"key": "2"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["3"], "command": "vnm_feed_input", "args": {"key": "3"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["4"], "command": "vnm_feed_input", "args": {"key": "4"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["5"], "command": "vnm_feed_input", "args": {"key": "5"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["6"], "command": "vnm_feed_input", "args": {"key": "6"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["7"], "command": "vnm_feed_input", "args": {"key": "7"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["8"], "command": "vnm_feed_input", "args": {"key": "8"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["9"], "command": "vnm_feed_input", "args": {"key": "9"}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["0"], "command": "vnm_feed_input", "args": {"key": "0"}, "context": [{"key": "vnm.command_mode"}]},
+
     { "keys": ["."], "command": "vnm_feed_input", "args": {"key": "."}, "context": [{"key": "vnm.command_mode"}]},
+    { "keys": ["_"], "command": "vnm_feed_input", "args": {"key": "_"}, "context": [{"key": "vnm.command_mode"}]},
     { "keys": ["{"], "command": "vnm_feed_input", "args": {"key": "{"}, "context": [{"key": "vnm.command_mode"}]},
     { "keys": ["}"], "command": "vnm_feed_input", "args": {"key": "}"}, "context": [{"key": "vnm.command_mode"}]},
 ]

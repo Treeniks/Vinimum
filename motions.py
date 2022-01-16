@@ -212,6 +212,22 @@ class FindInLineBackwardsMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
+# _
+class ToBOLMotion(Motion):
+    def move(self):
+        self.view.run_command("move_to", {"to": "bol"})
+
+    def select(self):
+        self.view.run_command("move_to", {"to": "bol", "extend": True})
+
+# 0
+class ToHardBOLMotion(Motion):
+    def move(self):
+        self.view.run_command("move_to", {"to": "hardbol"})
+
+    def select(self):
+        self.view.run_command("move_to", {"to": "hardbol", "extend": True})
+
 # t
 class ToInLineMotion(Motion):
     def __init__(self, view, character):
@@ -285,6 +301,8 @@ motions = {
     "l": RightMotion,
     "{": EmptyLineUpMotion,
     "}": EmptyLineDownMotion,
+    "_": ToBOLMotion,
+    "0": ToHardBOLMotion,
     "f": FindInLineMotion,
     "F": FindInLineBackwardsMotion,
     "t": ToInLineMotion,

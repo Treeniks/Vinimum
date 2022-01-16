@@ -48,6 +48,17 @@ class RemoveCharacterCommand(Command):
     def run(self):
         self.view.run_command("right_delete")
 
+# D
+class DeleteToEOLCommand(Command):
+    def run(self):
+        self.view.run_command("run_macro_file", {"file": "res://Packages/Default/Delete to Hard EOL.sublime-macro"})
+
+# C
+class ChangeToEOLCommand(Command):
+    def run(self):
+        vinimum.enter_sublime_mode()
+        self.view.run_command("run_macro_file", {"file": "res://Packages/Default/Delete to Hard EOL.sublime-macro"})
+
 commands = {
     "i": InsertCommand,
     "I": InsertBOLCommand,
@@ -56,4 +67,6 @@ commands = {
     "o": NewLineAfterCommand,
     "O": NewLineBeforeCommand,
     "x": RemoveCharacterCommand,
+    "D": DeleteToEOLCommand,
+    "C": ChangeToEOLCommand,
 }
