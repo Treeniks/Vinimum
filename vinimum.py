@@ -86,6 +86,7 @@ def eval(view):
         elif a in commands.commands: # e.g. 'i'
             command = commands.commands[a](view)
             command.run()
+            g_prev_command = g_command
         elif a in motions.motions: # e.g. 'w'
             motion = motions.motions[a](view)
             motion.move()
