@@ -46,7 +46,6 @@ class WordObject(TextObject):
         for r in sel:
             sel.add(expand_to_whitespace(self.view, r))
 
-
 modifiers = {
     "i": Modifier.INNER,
     "a": Modifier.OUTER,

@@ -43,7 +43,6 @@ class LeftMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-# TODO bug when called while on an empty line
 class RightMotion(Motion):
     def move(self):
         sel = self.view.sel()
@@ -53,6 +52,8 @@ class RightMotion(Motion):
             new_pt = r.a + 1
             if new_pt >= line.b:
                 new_pt = line.b - 1
+            if line.a == line.b:
+                new_pt = r.a
             new_sel.append(Region(new_pt))
         sel.clear()
         sel.add_all(new_sel)
