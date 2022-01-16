@@ -58,11 +58,20 @@ def eval(view: View):
 
     try:
         a = g_command[0]
-        if a in commands:
+        # r is a special command
+        if a == "r":
+            b = g_command[1]
+            view.run_command("vnm_replace_character", {"character": b})
+        # f/F/t/T are special motions
+        elif a in "fFtT":
+            b = g_command[1]
+            motion = motions[a](view, b)
+            motion.move()
+        elif a in commands:
             # e.g. 'i'
             command = commands[a](view)
             command.run()
-        if a in motions:
+        elif a in motions:
             # e.g. 'w'
             motion = motions[a](view)
             motion.move()
@@ -73,7 +82,12 @@ def eval(view: View):
             if b == a:
                 # e.g. 'dd'
                 action.double()
-            if b in motions:
+            # f/F/t/T are special motions
+            elif b in "fFtT":
+                c = g_command[2]
+                motion = motions[b](view, c)
+                action.run(motion.select)
+            elif b in motions:
                 # e.g. 'dw'
                 motion = motions[b](view)
                 action.run(motion.select)
@@ -168,3 +182,10 @@ class VnmOverlayWorkaround(TextCommand):
 class VnmResetCommandCommand(TextCommand):
     def run(self, edit: Edit):
         reset()
+
+# assumes that the selections are points
+class VnmReplaceCharacter(TextCommand):
+    def run(self, edit: Edit, character):
+        sel = self.view.sel()
+        for r in sel:
+            self.view.replace(edit, Region(r.a, r.b + 1), character)

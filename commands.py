@@ -37,6 +37,10 @@ class NewLineBeforeCommand(Command):
         vinimum.enter_sublime_mode()
         self.view.run_command("run_macro_file", {"file": "res://Packages/Default/Add Line Before.sublime-macro"})
 
+class RemoveCharacterCommand(Command):
+    def run(self):
+        self.view.run_command("right_delete")
+
 commands = {
     "i": InsertCommand,
     "I": InsertBOLCommand,
@@ -44,4 +48,5 @@ commands = {
     "A": AppendEOLCommand,
     "o": NewLineAfterCommand,
     "O": NewLineBeforeCommand,
+    "x": RemoveCharacterCommand,
 }

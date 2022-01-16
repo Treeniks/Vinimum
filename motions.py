@@ -11,6 +11,7 @@ class Motion(Actionable):
     def select(self):
         pass
 
+# w
 class WordMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": True})
@@ -18,6 +19,31 @@ class WordMotion(Motion):
     def select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": True, "extend": True})
 
+# W
+class BigWordMotion(Motion):
+    def move(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": True})
+
+    def select(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": True, "extend": True})
+
+# b
+class BackMotion(Motion):
+    def move(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": False})
+
+    def select(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": False, "extend": True})
+
+# B
+class BigBackMotion(Motion):
+    def move(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": False})
+
+    def select(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": False, "extend": True})
+
+# j
 class LeftMotion(Motion):
     def move(self):
         sel = self.view.sel()
@@ -43,6 +69,7 @@ class LeftMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
+# l
 class RightMotion(Motion):
     def move(self):
         sel = self.view.sel()
@@ -70,6 +97,7 @@ class RightMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
+# k
 class UpMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "lines", "forward": False})
@@ -78,6 +106,7 @@ class UpMotion(Motion):
         self.view.run_command("move", {"by": "lines", "forward": False, "extend": True})
         self.view.run_command("expand_selection", {"to": "line"})
 
+# j
 class DownMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "lines", "forward": True})
@@ -86,7 +115,7 @@ class DownMotion(Motion):
         self.view.run_command("move", {"by": "lines", "forward": True, "extend": True})
         self.view.run_command("expand_selection", {"to": "line"})
 
-# '{'
+# {
 class EmptyLineUpMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": False})
@@ -94,7 +123,7 @@ class EmptyLineUpMotion(Motion):
     def select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": False, "extend": True})
 
-# '}'
+# }
 class EmptyLineDownMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True})
@@ -102,12 +131,139 @@ class EmptyLineDownMotion(Motion):
     def select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True, "extend": True})
 
+# f
+class FindInLineMotion(Motion):
+    def __init__(self, view, character):
+        self.view = view
+        self.character = character
+
+    def move(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(r.a, line.b))
+            index = s.find(self.character, 1)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a + index))
+        sel.clear()
+        sel.add_all(new_sel)
+
+    def select(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(r.a, line.b))
+            index = s.find(self.character, 1)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a, r.a + index))
+        sel.clear()
+        sel.add_all(new_sel)
+
+# F
+class FindInLineBackwardsMotion(Motion):
+    def __init__(self, view, character):
+        self.view = view
+        self.character = character
+
+    def move(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(line.a, r.a))[::-1]
+            index = s.find(self.character, 0)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a - index - 1))
+        sel.clear()
+        sel.add_all(new_sel)
+
+    def select(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(line.a, r.a))[::-1]
+            index = s.find(self.character, 0)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a, r.a - index - 1))
+        sel.clear()
+        sel.add_all(new_sel)
+
+# t
+class ToInLineMotion(Motion):
+    def __init__(self, view, character):
+        self.view = view
+        self.character = character
+
+    def move(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(r.a, line.b))
+            index = s.find(self.character, 1)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a + index - 1))
+        sel.clear()
+        sel.add_all(new_sel)
+
+    def select(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(r.a, line.b))
+            index = s.find(self.character, 1)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a, r.a + index - 1))
+        sel.clear()
+        sel.add_all(new_sel)
+
+# T
+class ToInLineBackwardsMotion(Motion):
+    def __init__(self, view, character):
+        self.view = view
+        self.character = character
+
+    def move(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(line.a, r.a))[::-1]
+            index = s.find(self.character, 0)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a - index))
+        sel.clear()
+        sel.add_all(new_sel)
+
+    def select(self):
+        sel = self.view.sel()
+        new_sel = []
+        for r in sel:
+            line = self.view.line(r)
+            s = self.view.substr(Region(line.a, r.a))[::-1]
+            index = s.find(self.character, 0)
+            if index == -1: new_sel.append(r)
+            else: new_sel.append(Region(r.a, r.a - index))
+        sel.clear()
+        sel.add_all(new_sel)
+
 motions = {
     "w": WordMotion,
+    "W": BigWordMotion,
+    "b": BackMotion,
+    "B": BigBackMotion,
     "h": LeftMotion,
     "j": DownMotion,
     "k": UpMotion,
     "l": RightMotion,
     "{": EmptyLineUpMotion,
     "}": EmptyLineDownMotion,
+    "f": FindInLineMotion,
+    "F": FindInLineBackwardsMotion,
+    "t": ToInLineMotion,
+    "T": ToInLineBackwardsMotion,
 }
