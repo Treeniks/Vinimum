@@ -31,7 +31,7 @@ def update_visuals():
                 view.settings().set("command_mode", False)
                 desc = "SUBLIME MODE"
             if g_command:
-                desc += f" - {g_command}"
+                desc += f" {g_command}"
             # the '_' is to ensure that this is the first entry in the status line
             view.set_status("_vinimum", desc)
 
