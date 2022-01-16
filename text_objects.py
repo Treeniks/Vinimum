@@ -1,5 +1,7 @@
 from sublime import Region
 
+import Vinimum.motions as motions
+
 from enum import Enum
 
 class Modifier(Enum):
@@ -35,6 +37,7 @@ def expand_to_whitespace(view, r):
 
     return Region(a, b)
 
+# w
 class WordObject(TextObject):
     def _select_inner(self):
         self.view.run_command("expand_selection", {"to": "word"})
@@ -45,6 +48,62 @@ class WordObject(TextObject):
         for r in sel:
             sel.add(expand_to_whitespace(self.view, r))
 
+class BracketsObject(TextObject):
+    def __init__(self, view, modifier, character):
+        super().__init__(view, modifier)
+        self.character = character
+
+    def _select_inner(self):
+        self.view.run_command("expand_selection", {"to": "brackets", "brackets": self.character})
+
+    def _select_outer(self):
+        self.view.run_command("expand_selection", {"to": "brackets", "brackets": self.character})
+        self.view.run_command("expand_selection", {"to": "brackets", "brackets": self.character})
+
+# (
+class RoundBracketsObject(BracketsObject):
+    def __init__(self, view, modifier):
+        super().__init__(view, modifier, "(")
+
+# [
+class SquareBracketsObject(BracketsObject):
+    def __init__(self, view, modifier):
+        super().__init__(view, modifier, "[")
+
+# {
+class CurlyBracketsObject(BracketsObject):
+    def __init__(self, view, modifier):
+        super().__init__(view, modifier, "{")
+
+class QuotesObject(TextObject):
+    def __init__(self, view, modifier, character):
+        super().__init__(view, modifier)
+        self.character = character
+
+    def _select_inner(self):
+        motion_backwards = motions.ToInLineBackwardsMotion(self.view, self.character)
+        motion_forwards = motions.ToInLineMotion(self.view, self.character)
+
+        motion_backwards.move()
+        motion_forwards.select()
+
+    def _select_outer(self):
+        motion_backwards = motions.FindInLineBackwardsMotion(self.view, self.character)
+        motion_forwards = motions.FindInLineMotion(self.view, self.character)
+
+        motion_backwards.move()
+        motion_forwards.select()
+
+# '
+class SingleQuotesObject(QuotesObject):
+    def __init__(self, view, modifier):
+        super().__init__(view, modifier, "'")
+
+# "
+class DoubleQuotesObject(QuotesObject):
+    def __init__(self, view, modifier):
+        super().__init__(view, modifier, '"')
+
 modifiers = {
     "i": Modifier.INNER,
     "a": Modifier.OUTER,
@@ -52,4 +111,9 @@ modifiers = {
 
 text_objects = {
     "w": WordObject,
+    "(": RoundBracketsObject,
+    "[": SquareBracketsObject,
+    "{": CurlyBracketsObject,
+    "'": SingleQuotesObject,
+    '"': DoubleQuotesObject,
 }
