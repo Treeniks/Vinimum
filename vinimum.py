@@ -1,10 +1,11 @@
 import sublime
 from sublime import Edit, View, Region
 from sublime_plugin import TextCommand, EventListener
+
 from Vinimum.actions import actions
 from Vinimum.commands import commands
 from Vinimum.motions import motions, LeftMotion
-from Vinimum.text_objects import text_objects, modifiers
+from Vinimum.text_objects import modifiers, text_objects
 
 from enum import Enum
 
@@ -58,23 +59,32 @@ def eval(view: View):
     try:
         a = g_command[0]
         if a in commands:
+            # e.g. 'i'
             command = commands[a](view)
             command.run()
         if a in motions:
+            # e.g. 'w'
             motion = motions[a](view)
             motion.move()
         elif a in actions:
+            # e.g. 'd'
             action = actions[a](view)
             b = g_command[1]
+            if b == a:
+                # e.g. 'dd'
+                action.double()
             if b in motions:
+                # e.g. 'dw'
                 motion = motions[b](view)
-                action.run(motion)
+                action.run(motion.select)
             elif b in modifiers:
+                # e.g. 'di'
                 modifier = modifiers[b]
                 c = g_command[2]
                 if c in text_objects:
+                    # e.g. 'diw'
                     text_object = text_objects[c](view, modifier)
-                    action.run(text_object)
+                    action.run(text_object.select)
         reset()
     except IndexError:
         pass

@@ -14,10 +14,8 @@ class TextObject(Actionable):
 
     def select(self):
         if self.modifier == Modifier.INNER:
-            print("inner", end=" ")
             return self._select_inner()
         elif self.modifier == Modifier.OUTER:
-            print("outer", end=" ")
             return self._select_outer()
 
     def _select_inner(self):
@@ -40,11 +38,9 @@ def expand_to_whitespace(view, r):
 
 class WordObject(TextObject):
     def _select_inner(self):
-        print("word")
         self.view.run_command("expand_selection", {"to": "word"})
 
     def _select_outer(self):
-        print("word")
         self.view.run_command("expand_selection", {"to": "word"})
         sel = self.view.sel()
         for r in sel:

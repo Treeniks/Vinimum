@@ -13,16 +13,13 @@ class Motion(Actionable):
 
 class WordMotion(Motion):
     def move(self):
-        print("word")
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": True})
 
     def select(self):
-        print("word")
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": True, "extend": True})
 
 class LeftMotion(Motion):
     def move(self):
-        print("left")
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -35,7 +32,6 @@ class LeftMotion(Motion):
         sel.add_all(new_sel)
 
     def select(self):
-        print("left")
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -47,9 +43,9 @@ class LeftMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
+# TODO bug when called while on an empty line
 class RightMotion(Motion):
     def move(self):
-        print("right")
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -62,7 +58,6 @@ class RightMotion(Motion):
         sel.add_all(new_sel)
 
     def select(self):
-        print("right")
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -79,7 +74,6 @@ class UpMotion(Motion):
         self.view.run_command("move", {"by": "lines", "forward": False})
 
     def select(self):
-        print("up")
         self.view.run_command("move", {"by": "lines", "forward": False, "extend": True})
         self.view.run_command("expand_selection", {"to": "line"})
 
@@ -88,9 +82,24 @@ class DownMotion(Motion):
         self.view.run_command("move", {"by": "lines", "forward": True})
 
     def select(self):
-        print("down")
         self.view.run_command("move", {"by": "lines", "forward": True, "extend": True})
         self.view.run_command("expand_selection", {"to": "line"})
+
+# '{'
+class EmptyLineUpMotion(Motion):
+    def move(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": False})
+
+    def select(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": False, "extend": True})
+
+# '}'
+class EmptyLineDownMotion(Motion):
+    def move(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True})
+
+    def select(self):
+        self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True, "extend": True})
 
 motions = {
     "w": WordMotion,
@@ -98,4 +107,6 @@ motions = {
     "j": DownMotion,
     "k": UpMotion,
     "l": RightMotion,
+    "{": EmptyLineUpMotion,
+    "}": EmptyLineDownMotion,
 }
