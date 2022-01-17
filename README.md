@@ -21,6 +21,25 @@ After that, simply use `ctrl+[` to enter command mode in which you can enter *mo
   - The `.` command currently only repeats the last command, without tracking any input given directly after. This means that, for example, when replacing a word with "hello" by typing `c i w h e l l o ctrl+[`, then a `.` command after will only repeat the `c i w` part. This might be corrected in the future.
 - `j` and `k` do not go by logical lines, but instead by visual lines. I.e. in a buffer with wordwrap on, when a logical line wraps and has multiple visual lines, `j` and `k` in Command Mode will act just like the up and down arrow keys. This is intended, though there might be a setting for it in the future.
 - Registers do not exist, commands like yank and paste are not implemented yet. Any copying and pasting should, at least for now, be done the Sublime way.
+- Macros, i.e. the `q` command, are not implemented yet. Until they are, simply use Sublime's built in Macro system or Multicursors.
+- Any command that is set in a keybind will still work in Command Mode, only character input is suppressed. Thus, pressing `backspace` will still delete to the left, pressing `ctrl+z` will still undo, etc. This is intentional, although there might be a select few commands that will be suppressed in the future. If you wish to suppress certain commands, you can simply remap the keybind in question like so:
+  ```json
+  { "keys": ["backspace"], "command": "noop", "context": [{"key": "vnm.command_mode"}] },
+  ```
+
+## List of Implemented Commands
+The implementation of Vinimum differentiates between *commands*, *actions*, *motions*, *text_object_modifiers* and *text_objects*.
+
+- *commands*: direct execution\
+  `i`, `I`, `a`, `A`, `o`, `O`, `x`, `D`, `C`, `r`
+- *actions*: followed by either itself, a *motion* or a *text_object*\
+  `d`, `c`, `v`
+- *motions*: define a movement from the current caret positon\
+  `w`, `W`, `b`, `B`, `e`, `E`, `h`, `j`, `k`, `l`, `{`, `}`, `_`, `0`, `f`, `F`, `t`, `T`
+- *text_object_modifiers*: used as a modifier for *text_objects*\
+  `i` (inner), `a` (outer)
+- *text_objects*: define an area\
+  `w`,`(`,`[`,`{`,`'`,`"`
 
 ## Philosophy
 The core idea of Vinimum is the following: if someone were to secretly install the Package on your Sublime Text, unless you would specifically look for it, you wouldn't know it's there.
@@ -71,16 +90,9 @@ The question could also be framed as "why did I create this plugin and not just 
 4. **Occasional strange behaviour with panels and overlays:**
    Sometimes Vim Plugins cause problems when using panels or overlays, like the Command Palette. To combat this, Vinimum immediately jumps into Sublime Mode if it detects that a panel or overlay was opened. Note that because of [an issue with `show_overlay`](https://github.com/sublimehq/sublime_text/issues/2198), this is currently solved by remapping the default keybinds for `show_overlay`. If you have custom keybinds for overlays, please look into the `Default.sublime-keymap` file of this package to see how you can rebind your custom keybinds. An issue like this does not exist for panels.
 
-## List of Implemented Commands
-The implementation of Vinimum differentiates between *commands*, *actions*, *motions*, *text_object_modifiers* and *text_objects*.
-
-- *commands*: direct execution\
-  `i`, `I`, `a`, `A`, `o`, `O`, `x`, `D`, `C`, `r`
-- *actions*: followed by either itself, a *motion* or a *text_object*\
-  `d`, `c`, `v`
-- *motions*: define a movement from the current caret positon\
-  `w`, `W`, `b`, `B`, `e`, `E`, `h`, `j`, `k`, `l`, `{`, `}`, `_`, `0`, `f`, `F`, `t`, `T`
-- *text_object_modifiers*: used as a modifier for *text_objects*\
-  `i` (inner), `a` (outer)
-- *text_objects*: define an area\
-  `w`,`(`,`[`,`{`,`'`,`"`
+## A note on special Unicode characters
+The implementation of Vinimum works by remapping keys to a `vnm_feed_input` command while in Command Mode. Thus, any command that takes an input while in Command Mode, like `r`, will not work with keys that are not explicitly set in the keymap file. Most important keys are remapped already, but some more unique keys like ä, á, ® and þ are not. This doesn't affect Sublime Mode, but a command like `r ä` will not work out of the box. To add more keys, simply add this to your `Default.sublime-keymap`:
+```json
+{ "keys": ["ä"], "command": "vnm_feed_input", "args": {"key": "ä"}, "context": [{"key": "vnm.command_mode"}] },
+```
+and replace `ä` with the character in question.
