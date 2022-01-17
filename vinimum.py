@@ -55,12 +55,15 @@ def remove_selection(view):
 def enter_command_mode(view):
     global g_state
 
-    g_state = State.COMMAND
-    if view.has_non_empty_selection_region():
-        remove_selection(view)
+    if g_state == State.COMMAND:
+        reset()
     else:
-        motions.LeftMotion(view).move()
-    update_visuals()
+        g_state = State.COMMAND
+        if view.has_non_empty_selection_region():
+            remove_selection(view)
+        else:
+            motions.LeftMotion(view).move()
+        update_visuals()
 
 def enter_sublime_mode():
     global g_state

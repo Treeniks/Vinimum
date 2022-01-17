@@ -1,6 +1,4 @@
 [
-    { "keys": ["escape"], "command": "vnm_reset_command", "context": [{"key": "vnm.command_mode"}, {"key": "vnm.command_in_process"}] },
-
     // show_overlay commands overwrite because the command is not trackable in code
     // see https://github.com/sublimehq/sublime_text/issues/2198
     {
