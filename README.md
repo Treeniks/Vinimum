@@ -3,12 +3,18 @@ Minimalistic Vim Emulation for Sublime Text
 
 > This Package does not try to faithfully emulate Vim! It is a very stripped down, minimal and opinionated Vim emulation instead. If what you want is a faithful Vim experience inside Sublime Text, look at [NeoVintageous](https://github.com/NeoVintageous/NeoVintageous) instead.
 
+## Install
+This Package is *not* available on Package Control. You will have to add this repository manually:\
+Open Command Palette -> Package Control: Add Repository -> `https://github.com/Treeniks/Vinimum`
+
+Or you manually clone this repository into your `Sublime Text/Data/Packages` directory.
+
 ## Quick Start and Usage
 After installing the Plugin, add this to your `Default.sublime-keymap` *(Preferences -> Key Bindings)*:
 ```json
 { "keys": ["ctrl+["], "command": "vnm_enter_command_mode" },
 ```
-This is the default recommended configuration for Vinimum. As for why this is not included by default, please read the [Philosophy](#philosophy) section.
+This is the recommended configuration for Vinimum. As for why this is not included by default, please read the [Philosophy](#philosophy) section.
 
 After that, simply use `ctrl+[` to enter command mode in which you can enter *most* vim commands just as you would in vim, although not all commands are implemented yet. For a list of differences in commands between Vinimum and Vim, read the [Differences to Vim](#differences-to-vim) section. For a list of commands that are implemented, see the [List of Implemented Commands](#list-of-implemented-commands) section.
 
