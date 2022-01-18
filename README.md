@@ -22,9 +22,6 @@ After that, simply use `ctrl+[` to enter command mode in which you can enter *mo
 - Normal Mode is called Command Mode, Insert Mode is called Sublime Mode. These names better reflect the philosophy of Vinimum, as Command Mode is the exception, and Sublime Mode is unaltered Sublime.
 - There is no Visual Mode. Any Selection made while in Command Mode will immediately put one into Sublime Mode. `v` in Vinimum is instead an action that will select the following motion or text object. This is currently not intended to change, although there might be a setting to enable a Visual Mode in the future.
 - Some Sublime commands will throw you into Sublime Mode, specifically anything that opens a panel or overlay (e.g. `ctrl+shift+p`).
-- Repetition does not correctly work yet.
-  - Numbers given before commands do currently not work, however this is planned for the future.
-  - The `.` command currently only repeats the last command, without tracking any input given directly after. This means that, for example, when replacing a word with "hello" by typing `c i w h e l l o ctrl+[`, then a `.` command after will only repeat the `c i w` part. This might be corrected in the future.
 - `j` and `k` do not go by logical lines, but instead by visual lines. I.e. in a buffer with wordwrap on, when a logical line wraps and has multiple visual lines, `j` and `k` in Command Mode will act just like the up and down arrow keys. This is intended, though there might be a setting for it in the future.
 - Registers do not exist, commands like yank and paste are not implemented yet. Any copying and pasting should, at least for now, be done the Sublime way.
 - Macros, i.e. the `q` command, are not implemented yet. Until they are, simply use Sublime's built in Macro system or Multicursors.
