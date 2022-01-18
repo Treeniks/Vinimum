@@ -18,6 +18,7 @@ g_command = ""
 g_prev_command = ""
 g_insert = ""
 # this is here to get around some issues with undo and the . repeat command
+# True if the current/last TextCommand was undo
 g_undo = False
 
 def update_visuals():
@@ -224,8 +225,15 @@ class VnmEventListener(EventListener):
         global g_insert, g_undo
 
         (s, d, i) = view.command_history(0, True)
-        if s == "insert" and not g_undo:
-            g_insert += d["characters"]
+
+        # required to check because undoing an insert
+        # will be listed as an "insert" command in the history
+        if not g_undo:
+            if s == "insert":
+                g_insert += d["characters"]
+            elif s == "left_delete":
+                g_insert = g_insert[:-1]
+
 
     def on_text_command(self, view, command_name, args):
         global g_undo
