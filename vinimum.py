@@ -16,6 +16,9 @@ class State(Enum):
 g_state = State.SUBLIME
 g_command = ""
 g_prev_command = ""
+g_insert = ""
+# this is here to get around some issues with undo and the . repeat command
+g_undo = False
 
 def update_visuals():
     global g_state, g_command
@@ -72,13 +75,17 @@ def enter_sublime_mode():
     update_visuals()
 
 def eval(view):
-    global g_command, g_prev_command
+    global g_command, g_prev_command, g_insert
 
     try:
         a = g_command[0]
+
+        to_insert = None
         if a == ".": # repeat command
             g_command = g_prev_command
             a = g_command[0]
+            to_insert = g_insert
+
         if a == "r": # r is a special command
             b = g_command[1]
             view.run_command("vnm_replace_character", {"character": b})
@@ -92,6 +99,8 @@ def eval(view):
             command.run()
             if command.repeatable():
                 g_prev_command = g_command
+                if not to_insert:
+                    g_insert = ""
         elif a in motions.motions: # e.g. 'w'
             motion = motions.motions[a](view)
             motion.move()
@@ -114,6 +123,13 @@ def eval(view):
                     text_object = text_objects.text_objects[c](view, modifier)
                     action.run(text_object.select)
             g_prev_command = g_command
+            if not to_insert:
+                g_insert = ""
+
+        if to_insert:
+            view.run_command("insert", {"characters": to_insert})
+            enter_command_mode(view)
+
         reset()
     except IndexError:
         pass
@@ -143,7 +159,7 @@ class VnmEventListener(EventListener):
         self.on_load(view)
 
     def on_selection_modified(self, view):
-        global g_state
+        global g_state, g_prev_command, g_insert
 
         if view.has_non_empty_selection_region():
             enter_sublime_mode()
@@ -159,7 +175,6 @@ class VnmEventListener(EventListener):
             sel.clear()
             sel.add_all(new_sel)
 
-
     def on_query_context(self, view, key, operator, operand, match_all):
         global g_state
 
@@ -169,6 +184,28 @@ class VnmEventListener(EventListener):
 
         if operator == sublime.OP_EQUAL: return val == operand
         elif operator == sublime.OP_NOT_EQUAL: return val != operand
+
+    def on_modified(self, view):
+        global g_insert, g_undo
+
+        (s, d, i) = view.command_history(0, True)
+        if s == "insert" and not g_undo:
+            g_insert += d["characters"]
+
+    def on_text_command(self, view, command_name, args):
+        global g_undo
+
+        if command_name == "undo":
+            g_undo = True
+        else:
+            g_undo = False
+
+    def on_post_text_command(self, view, command_name, args):
+        global g_prev_command, g_insert
+
+        if command_name == "move" and not g_insert == "":
+            g_insert = ""
+            g_prev_command = "i"
 
     def on_post_window_command(self, view, command_name, args):
         # show_overlay does not get tracked
