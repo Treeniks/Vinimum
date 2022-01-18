@@ -7,7 +7,11 @@ class Motion():
     def move(self):
         pass
 
-    def select(self):
+    def select(self, repeat=1):
+        for i in range(repeat):
+            self._select()
+
+    def _select(self):
         pass
 
 # w
@@ -15,7 +19,7 @@ class WordMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": True})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": True, "extend": True})
 
 # W
@@ -23,7 +27,7 @@ class BigWordMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": True})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": True, "extend": True})
 
 # b
@@ -31,7 +35,7 @@ class BackMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": False})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "punct_begin": True, "empty_line": True, "forward": False, "extend": True})
 
 # B
@@ -39,7 +43,7 @@ class BigBackMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": False})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": True, "empty_line": True, "separators": "", "forward": False, "extend": True})
 
 # e
@@ -49,8 +53,8 @@ class WordEndMotion(Motion):
         self.view.run_command("move", {"by": "stops", "word_end": True, "punct_end": True, "empty_line": True, "forward": True})
         LeftMotion(self.view).move()
 
-    def select(self):
-        RightMotion(self.view).select()
+    def _select(self):
+        RightMotion(self.view)._select()
         self.view.run_command("move", {"by": "stops", "word_end": True, "punct_end": True, "empty_line": True, "forward": True, "extend": True})
 
 # E
@@ -60,8 +64,8 @@ class BigWordEndMotion(Motion):
         self.view.run_command("move", {"by": "stops", "word_end": True, "empty_line": True, "separators": "", "forward": True})
         LeftMotion(self.view).move()
 
-    def select(self):
-        RightMotion(self.view).select()
+    def _select(self):
+        RightMotion(self.view)._select()
         self.view.run_command("move", {"by": "stops", "word_end": True, "empty_line": True, "separators": "", "forward": True, "extend": True})
 
 # j
@@ -78,7 +82,7 @@ class LeftMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-    def select(self):
+    def _select(self):
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -106,7 +110,7 @@ class RightMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-    def select(self):
+    def _select(self):
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -123,8 +127,9 @@ class UpMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "lines", "forward": False})
 
-    def select(self):
-        self.view.run_command("move", {"by": "lines", "forward": False, "extend": True})
+    def select(self, repeat=1):
+        for i in range(repeat):
+            self.view.run_command("move", {"by": "lines", "forward": False, "extend": True})
         self.view.run_command("expand_selection", {"to": "line"})
 
 # j
@@ -132,8 +137,9 @@ class DownMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "lines", "forward": True})
 
-    def select(self):
-        self.view.run_command("move", {"by": "lines", "forward": True, "extend": True})
+    def select(self, repeat=1):
+        for i in range(repeat):
+            self.view.run_command("move", {"by": "lines", "forward": True, "extend": True})
         self.view.run_command("expand_selection", {"to": "line"})
 
 # {
@@ -141,7 +147,7 @@ class EmptyLineUpMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": False})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": False, "extend": True})
 
 # }
@@ -149,7 +155,7 @@ class EmptyLineDownMotion(Motion):
     def move(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move", {"by": "stops", "word_begin": False, "empty_line": True, "separators": "", "forward": True, "extend": True})
 
 # _
@@ -157,7 +163,7 @@ class ToBOLMotion(Motion):
     def move(self):
         self.view.run_command("move_to", {"to": "bol"})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move_to", {"to": "bol", "extend": True})
 
 # 0
@@ -165,7 +171,7 @@ class ToHardBOLMotion(Motion):
     def move(self):
         self.view.run_command("move_to", {"to": "hardbol"})
 
-    def select(self):
+    def _select(self):
         self.view.run_command("move_to", {"to": "hardbol", "extend": True})
 
 # f
@@ -186,7 +192,7 @@ class FindInLineMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-    def select(self):
+    def _select(self):
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -216,7 +222,7 @@ class FindInLineBackwardsMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-    def select(self):
+    def _select(self):
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -246,7 +252,7 @@ class ToInLineMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-    def select(self):
+    def _select(self):
         sel = self.view.sel()
         new_sel = []
         for r in sel:
@@ -276,7 +282,7 @@ class ToInLineBackwardsMotion(Motion):
         sel.clear()
         sel.add_all(new_sel)
 
-    def select(self):
+    def _select(self):
         sel = self.view.sel()
         new_sel = []
         for r in sel:

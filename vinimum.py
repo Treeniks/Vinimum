@@ -143,13 +143,11 @@ def eval(view):
                 if b in "fFtT": # f/F/t/T are special motions
                     c = g_command[i + 2]
                     motion = motions.motions[b](view, c)
-                    for i in range(repeat):
-                        action.run(motion.select)
+                    action.run(lambda: motion.select(repeat))
 
                 elif b in motions.motions: # e.g. 'dw'
                     motion = motions.motions[b](view)
-                    for i in range(repeat):
-                        action.run(motion.select)
+                    action.run(lambda: motion.select(repeat))
 
                 elif b in text_objects.modifiers: # e.g. 'di'
                     modifier = text_objects.modifiers[b]
