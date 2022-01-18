@@ -77,51 +77,88 @@ def enter_sublime_mode():
 def eval(view):
     global g_command, g_prev_command, g_insert
 
+    i = 0
     try:
-        a = g_command[0]
+        a = g_command[i]
 
         to_insert = None
         if a == ".": # repeat command
             g_command = g_prev_command
-            a = g_command[0]
+            a = g_command[i]
             to_insert = g_insert
 
+        repeat = 1
+        if a.isnumeric() and not a == "0":
+            repeat = 0
+            while a.isnumeric():
+                repeat = repeat * 10 + int(a)
+                i += 1
+                a = g_command[i]
+
         if a == "r": # r is a special command
-            b = g_command[1]
-            view.run_command("vnm_replace_character", {"character": b})
+            b = g_command[i + 1]
+            for i in range(repeat):
+                view.run_command("vnm_replace_character", {"character": b})
+                if not i == repeat - 1:
+                    motions.RightMotion(view).move()
             g_prev_command = g_command
+
         elif a in "fFtT": # f/F/t/T are special motions
-            b = g_command[1]
+            b = g_command[i + 1]
             motion = motions.motions[a](view, b)
-            motion.move()
+            for i in range(repeat):
+                motion.move()
+
         elif a in commands.commands: # e.g. 'i'
             command = commands.commands[a](view)
+            # TODO some commands have unique behaviour upon numerical repetition
             command.run()
             if command.repeatable():
                 g_prev_command = g_command
                 if not to_insert:
                     g_insert = ""
+
         elif a in motions.motions: # e.g. 'w'
             motion = motions.motions[a](view)
-            motion.move()
+            for i in range(repeat):
+                motion.move()
+
         elif a in actions.actions: # e.g. 'd'
             action = actions.actions[a](view)
-            b = g_command[1]
+            b = g_command[i + 1]
+
             if b == a: # e.g. 'dd'
-                action.double()
-            elif b in "fFtT": # f/F/t/T are special motions
-                c = g_command[2]
-                motion = motions.motions[b](view, c)
-                action.run(motion.select)
-            elif b in motions.motions: # e.g. 'dw'
-                motion = motions.motions[b](view)
-                action.run(motion.select)
-            elif b in text_objects.modifiers: # e.g. 'di'
-                modifier = text_objects.modifiers[b]
-                c = g_command[2]
-                if c in text_objects.text_objects: # e.g. 'diw'
-                    text_object = text_objects.text_objects[c](view, modifier)
-                    action.run(text_object.select)
+                for i in range(repeat):
+                    action.double()
+
+            else:
+                if b.isnumeric() and not b == "0":
+                    tmp = 0
+                    while b.isnumeric():
+                        tmp = tmp * 10 + int(b)
+                        i += 1
+                        b = g_command[i + 1]
+                    repeat *= tmp
+
+                if b in "fFtT": # f/F/t/T are special motions
+                    c = g_command[i + 2]
+                    motion = motions.motions[b](view, c)
+                    for i in range(repeat):
+                        action.run(motion.select)
+
+                elif b in motions.motions: # e.g. 'dw'
+                    motion = motions.motions[b](view)
+                    for i in range(repeat):
+                        action.run(motion.select)
+
+                elif b in text_objects.modifiers: # e.g. 'di'
+                    modifier = text_objects.modifiers[b]
+                    c = g_command[i + 2]
+                    if c in text_objects.text_objects: # e.g. 'diw'
+                        text_object = text_objects.text_objects[c](view, modifier)
+                        for i in range(repeat):
+                            action.run(text_object.select)
+
             g_prev_command = g_command
             if not to_insert:
                 g_insert = ""
@@ -195,10 +232,8 @@ class VnmEventListener(EventListener):
     def on_text_command(self, view, command_name, args):
         global g_undo
 
-        if command_name == "undo":
-            g_undo = True
-        else:
-            g_undo = False
+        if command_name == "undo": g_undo = True
+        else: g_undo = False
 
     def on_post_text_command(self, view, command_name, args):
         global g_prev_command, g_insert
