@@ -47,6 +47,38 @@ The implementation of Vinimum differentiates between *commands*, *actions*, *mot
 - *text_objects*: define an area\
   `w`,`(`,`[`,`{`,`'`,`"`
 
+## Other Recommendations
+These are further recommended keybindings to be used alongside Vinimum. None of these are included by default.
+```json
+// move through auto complete suggestions with ctrl+p/n
+{
+    "keys": ["ctrl+p"],
+    "command": "move",
+    "args": {"by": "lines", "forward": false},
+    "context": [{"key": "auto_complete_visible"}]
+},
+{
+    "keys": ["ctrl+n"],
+    "command": "move",
+    "args": {"by": "lines", "forward": true},
+    "context": [{"key": "auto_complete_visible"}]
+},
+
+// move through command palette options with ctrl+p/n
+{
+    "keys": ["ctrl+p"],
+    "command": "move",
+    "args": {"by": "lines", "forward": false},
+    "context": [{"key": "overlay_has_focus"}],
+},
+{
+    "keys": ["ctrl+n"],
+    "command": "move",
+    "args": {"by": "lines", "forward": true},
+    "context": [{"key": "overlay_has_focus"}],
+},
+```
+
 ## Philosophy
 The core idea of Vinimum is the following: if someone were to secretly install the Package on your Sublime Text, unless you would specifically look for it, you wouldn't know it's there.
 

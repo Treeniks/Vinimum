@@ -32,34 +32,6 @@
         "context": [{"key": "vnm.command_mode"}],
     },
 
-    // move through auto complete suggestions with ctrl+p/n
-    {
-        "keys": ["ctrl+p"],
-        "command": "move",
-        "args": {"by": "lines", "forward": false},
-        "context": [{"key": "auto_complete_visible"}]
-    },
-    {
-        "keys": ["ctrl+n"],
-        "command": "move",
-        "args": {"by": "lines", "forward": true},
-        "context": [{"key": "auto_complete_visible"}]
-    },
-
-    // move through command palette options with ctrl+p/n
-    {
-        "keys": ["ctrl+p"],
-        "command": "move",
-        "args": {"by": "lines", "forward": false},
-        "context": [{"key": "overlay_has_focus"}],
-    },
-    {
-        "keys": ["ctrl+n"],
-        "command": "move",
-        "args": {"by": "lines", "forward": true},
-        "context": [{"key": "overlay_has_focus"}],
-    },
-
     { "keys": ["a"], "command": "vnm_feed_input", "args": {"key": "a"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["b"], "command": "vnm_feed_input", "args": {"key": "b"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["c"], "command": "vnm_feed_input", "args": {"key": "c"}, "context": [{"key": "vnm.command_mode"}] },
