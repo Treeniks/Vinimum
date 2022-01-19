@@ -39,7 +39,7 @@ The implementation of Vinimum differentiates between *commands*, *actions*, *mot
 - *commands*: direct execution\
   `i`, `I`, `a`, `A`, `o`, `O`, `x`, `D`, `C`, `r`
 - *actions*: followed by either itself, a *motion* or a *text_object*\
-  `d`, `c`, `v`
+  `d` (delete), `c` (change), `v` (select)
 - *motions*: define a movement from the current caret positon\
   `w`, `W`, `b`, `B`, `e`, `E`, `h`, `j`, `k`, `l`, `{`, `}`, `_`, `0`, `f`, `F`, `t`, `T`
 - *text_object_modifiers*: used as a modifier for *text_objects*\
@@ -125,7 +125,20 @@ The question could also be framed as "why did I create this plugin and not just 
    However, I don't always edit code by having both my hands on the keyboard and the editor in fullscreen. Sometimes, you're refactoring, or just hacking some code snippets together. Sometimes, editing code means copying code from an online resource to analyze, execute, slightly modify or learn from it. Mouse usage can slow one down during focused editing, but when editing code is secondary, having only one hand on the keyboard and the other on the mouse is not unusual. For those situations, Vim is about as bad of a choice as it gets. Being able to edit code the same way I would in vanilla Sublime is important to me. When selecting some text with the mouse that I want to delete, I don't want to have to find the `d` key with my left hand, instead I want to use my muscle memory to hit `backspace` like I did ever since using a computer for the first time.
 
    Vim forces me into having both hands on the keyboard. It actively hinders and discourages the use of a mouse. Howver, **I want the functionality to not need a mouse, yet not be actively hindered when using one.**
-4. **Occasional strange behaviour with panels and overlays:**
+4. **Confusing Visual Modes**:\
+   Every Vim plugin for any editor will have to make a decision on how to deal with Visual Mode and the editor's built in selection system.
+
+   They could either completely replace the built in system with the plugin's Visual Mode. This approach completely destroys what I talked about in **3**, as selecting something and then pressing `j` will not replace the selected text with j, but instead extend the selection downwards. Thus, while this approach is valid for a "turn my editor into Vim" kind of approach, it is something I do not want.
+
+   The other option is to have both a Sublime-Visual Mode and a Vim-Visual Mode. This approach however results in an ambiguation when selecting text. Visually, the two modes would be very similar, so the user is always left guessing which of the two they're currently in. It's also somewhat unintuitive. For example, the exact behaviour of `ctrl+d` is unclear.
+   - It could always use Sublime-Visual Mode, in which case `v i w` and `ctrl+d` do not have the same behaviour. This is a reasonable approach, and if Vinimum ever does get a Visual Mode, this would be how I would do it.
+   - It could always use Vim-Visual Mode, in which case it becomes unclear which `expand_selection` commands still use Sublime-Visual and which have been changed to Vim-Visual Mode.
+   - It could pick whichever mode the user was in when they pressed the keybind, i.e. Insert Mode becomes Sublime-Visual Mode and Command Mode becomes Vim-Visual Mode. This makes the keybind confusing and inconsistent.
+   Not to mention, this was just a single keybind example. Would something like mouse selection or `shift+right` have to use the same behaviour? If so, the second solution is already a Vim-Visual-only solution, so we wouldn't even be in a hybrid approach anymore.\
+   I think you can see how this hybrid approach generates some confusing questions that aren't exactly clean to answer. A Visual Mode that is exclusive to pressing `v` while in Command Mode is a feasibly fine solution, but even then, what exactly would happen if someone were to select something with the mouse while they were in the `v` Visual Mode?
+
+   Either way, Vinimum, for now, doesn't have a Visual Mode. Instead, there is a `v` action that will simply select whichever *motion* or *text_object* is given after. For anything else, I encourage you to follow the ideas of [Chris Toomey's talk "Mastering the Vim Language"](https://youtu.be/wlR5gYd6um0), in which the idea of using a combination of *text_objects* and relative line numbers to almost entirely replace Visual Mode with singular commands is brought up. It is the way I use Vim, and when a selection is still needed, Sublime's built in commands are usually good enough.
+5. **Occasional strange behaviour with panels and overlays:**\
    Sometimes Vim Plugins cause problems when using panels or overlays, like the Command Palette. To combat this, Vinimum immediately jumps into Sublime Mode if it detects that a panel or overlay was opened. Note that because of [an issue with `show_overlay`](https://github.com/sublimehq/sublime_text/issues/2198), this is currently solved by remapping the default keybinds for `show_overlay`. If you have custom keybinds for overlays, please look into the `Default.sublime-keymap` file of this package to see how you can rebind your custom keybinds. An issue like this does not exist for panels.
 
 ## A note on special Unicode characters
