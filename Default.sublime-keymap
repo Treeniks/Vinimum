@@ -97,6 +97,7 @@
     { "keys": ["9"], "command": "vnm_feed_input", "args": {"key": "9"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["0"], "command": "vnm_feed_input", "args": {"key": "0"}, "context": [{"key": "vnm.command_mode"}] },
 
+    { "keys": [" "], "command": "vnm_feed_input", "args": {"key": " "}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["!"], "command": "vnm_feed_input", "args": {"key": "!"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["@"], "command": "vnm_feed_input", "args": {"key": "@"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["#"], "command": "vnm_feed_input", "args": {"key": "#"}, "context": [{"key": "vnm.command_mode"}] },
