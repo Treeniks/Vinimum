@@ -5,14 +5,4 @@
 			"path": ".",
 		}
 	],
-	"settings":
-	{
-		"LSP":
-		{
-			"LSP-pyright":
-			{
-				"enabled": false
-			}
-		}
-	},
 }
