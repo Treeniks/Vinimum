@@ -147,3 +147,6 @@ The implementation of Vinimum works by remapping keys to a `vnm_feed_input` comm
 { "keys": ["ä"], "command": "vnm_feed_input", "args": {"key": "ä"}, "context": [{"key": "vnm.command_mode"}] },
 ```
 and replace `ä` with the character in question.
+
+## Known issues
+- Using the `a` command on an empty line will cause the cursor to jump to the next line.
