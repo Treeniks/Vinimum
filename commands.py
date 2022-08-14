@@ -62,6 +62,14 @@ class ChangeToEOLCommand(Command):
         vinimum.enter_sublime_mode()
         self.view.run_command("run_macro_file", {"file": "res://Packages/Default/Delete to Hard EOL.sublime-macro"})
 
+# u
+class UndoCommand(Command):
+    def run(self):
+        self.view.run_command("undo")
+
+    def repeatable(self):
+        return False
+
 commands = {
     "i": InsertCommand,
     "I": InsertBOLCommand,
@@ -72,4 +80,5 @@ commands = {
     "x": RemoveCharacterCommand,
     "D": DeleteToEOLCommand,
     "C": ChangeToEOLCommand,
+    "u": UndoCommand,
 }

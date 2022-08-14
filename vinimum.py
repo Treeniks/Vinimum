@@ -260,6 +260,7 @@ class VnmFeedInput(TextCommand):
 
         g_command += key
         # ? only add g_command to statusline in active view
+        # ? support for longer strings?
         update_visuals()
         eval(self.view)
 
