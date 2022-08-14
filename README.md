@@ -11,7 +11,7 @@ Or you manually clone this repository into your `Sublime Text/Data/Packages` dir
 
 ## Quick Start and Usage
 After installing the Plugin, add this to your `Default.sublime-keymap` *(Preferences -> Key Bindings)*:
-```json
+```jsonc
 { "keys": ["ctrl+["], "command": "vnm_enter_command_mode" },
 ```
 This is the recommended configuration for Vinimum. As for why this is not included by default, please read the [Philosophy](#philosophy) section.
@@ -29,7 +29,7 @@ After that, simply use `ctrl+[` to enter command mode in which you can enter *mo
 - Registers do not exist, commands like yank and paste are not implemented yet. Any copying and pasting should, at least for now, be done the Sublime way.
 - Macros, i.e. the `q` command, are not implemented yet. Until they are, simply use Sublime's built in Macro system or Multicursors.
 - Any command that is set in a keybind will still work in Command Mode, only character input is suppressed. Thus, pressing `backspace` will still delete to the left, pressing `ctrl+z` will still undo, etc. This is intentional, although there might be a select few commands that will be suppressed in the future. If you wish to suppress certain commands, you can simply remap the keybind in question like so:
-  ```json
+  ```jsonc
   { "keys": ["backspace"], "command": "noop", "context": [{"key": "vnm.command_mode"}] },
   ```
 
@@ -49,7 +49,7 @@ The implementation of Vinimum differentiates between *commands*, *actions*, *mot
 
 ## Other Recommendations
 These are further recommended keybindings to be used alongside Vinimum. None of these are included by default.
-```json
+```jsonc
 // move through auto complete suggestions with ctrl+p/n
 {
     "keys": ["ctrl+p"],
@@ -91,13 +91,13 @@ This means the following:
 4. Mouse usage is not actively hindered. When selecting text with a mouse, Vinimum will immediately go into Sublime Mode.
 
 Because of **1**, after installing the Package, one has to add a keybind of their choice to enter Command Mode before the Package is usable. To do so, add a keybind for the command `vnm_enter_command_mode` to your `Default.sublime-keymap` *(Preferences -> Key Bindings)*:
-```json
+```jsonc
 { "keys": ["ctrl+["], "command": "vnm_enter_command_mode" },
 ```
 The above is the recommended keybind for Vinimum. The reason why `escape` for the key should not be used is explained below in the [Why not stay more faithful to Vim?](#why-not-stay-more-faithful-to-vim) section, although obviously it can also be used if that is desired. `ctrl+[` is the default alternative to `escape` in Vim, which is why it's recommended to be used in place of `escape`.
 
 The reason that keybind is not included by default is that it replaces the Sublime default keybind for `unindent`:
-```json
+```jsonc
 { "keys": ["ctrl+["], "command": "unindent" },
 ```
 
@@ -105,7 +105,7 @@ Since the philosophy of Vinimum is to not replace *any* of Sublime's default key
 1. Set the `shift_tab_unindent` setting to `true` and use `shift+tab` instead.
 2. Use a different keybind to enter command mode, for example `ctrk+'`. However, this will destroy muscle memory.
 3. Remap `unindent` and `indent` one key to the right like this:
-   ```json
+   ```jsonc
    { "keys": ["ctrl+]"], "command": "unindent" },
    { "keys": ["ctrl+\\"], "command": "indent" },
    ```
@@ -143,7 +143,7 @@ The question could also be framed as "why did I create this plugin and not just 
 
 ## A note on special Unicode characters
 The implementation of Vinimum works by remapping keys to a `vnm_feed_input` command while in Command Mode. Thus, any command that takes an input while in Command Mode, like `r`, will not work with keys that are not explicitly set in the keymap file. Most important keys are remapped already, but some more unique keys like ä, á, ® and þ are not. This doesn't affect Sublime Mode, but a command like `r ä` will not work out of the box. To add more keys, simply add this to your `Default.sublime-keymap`:
-```json
+```jsonc
 { "keys": ["ä"], "command": "vnm_feed_input", "args": {"key": "ä"}, "context": [{"key": "vnm.command_mode"}] },
 ```
 and replace `ä` with the character in question.
