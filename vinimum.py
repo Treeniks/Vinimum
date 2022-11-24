@@ -1,6 +1,6 @@
 import sublime
 from sublime import Region
-from sublime_plugin import TextCommand, EventListener
+from sublime_plugin import TextCommand, EventListener, TextChangeListener
 
 import Vinimum.actions as actions
 import Vinimum.commands as commands
@@ -228,12 +228,8 @@ class VnmEventListener(EventListener):
 
         # required to check because undoing an insert
         # will be listed as an "insert" command in the history
-        if not g_undo:
-            if s == "insert":
-                g_insert += d["characters"]
-            elif s == "left_delete":
-                g_insert = g_insert[:-1]
-
+        if not g_undo and s == "left_delete":
+            g_insert = g_insert[:-1]
 
     def on_text_command(self, view, command_name, args):
         global g_undo
@@ -253,6 +249,13 @@ class VnmEventListener(EventListener):
         # see https://github.com/sublimehq/sublime_text/issues/2198
         if command_name == "show_overlay" or command_name == "show_panel":
             enter_sublime_mode()
+
+class VnmTextChangeListener(TextChangeListener):
+    def on_text_changed(self, changes):
+        global g_insert
+
+        change = changes[0]
+        g_insert += change.str
 
 class VnmFeedInput(TextCommand):
     def run(self, edit, key: str):
