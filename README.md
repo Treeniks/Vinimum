@@ -37,7 +37,7 @@ After that, simply use `ctrl+[` to enter command mode in which you can enter *mo
 The implementation of Vinimum differentiates between *commands*, *actions*, *motions*, *text_object_modifiers* and *text_objects*.
 
 - *commands*: direct execution\
-  `i`, `I`, `a`, `A`, `o`, `O`, `x`, `D`, `C`, `r`
+  `i`, `I`, `a`, `A`, `o`, `O`, `x`, `s`, `S`, `D`, `C`, `r`
 - *actions*: followed by either itself, a *motion* or a *text_object*\
   `d` (delete), `c` (change), `v` (select)
 - *motions*: define a movement from the current caret positon\

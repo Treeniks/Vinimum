@@ -28,15 +28,9 @@ class ChangeAction(Action):
             self.view.run_command("left_delete")
         vinimum.enter_sublime_mode()
 
-    def __select(self):
-        sel = self.view.sel()
-        new_sel = [self.view.line(r) for r in sel]
-        sel.clear()
-        sel.add_all(new_sel)
-
     def double(self):
-        self.run(self.__select)
-        self.view.run_command("reindent")
+        import Vinimum.commands as commands
+        commands.SubstitudeLineCommand(self.view).run()
 
 # v
 # while Vinimum doesn't have a full Visual Mode

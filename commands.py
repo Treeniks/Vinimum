@@ -87,6 +87,24 @@ class RemoveCharacterCommand(Command):
     def run(self):
         self.view.run_command("right_delete")
 
+# s
+class SubstitudeCommand(Command):
+    def run(self):
+        self.view.run_command("right_delete")
+        vinimum.enter_sublime_mode()
+
+# S
+class SubstitudeLineCommand(Command):
+    def run(self):
+        sel = self.view.sel()
+        new_sel = [self.view.line(r) for r in sel]
+        sel.clear()
+        sel.add_all(new_sel)
+        if self.view.has_non_empty_selection_region():
+            self.view.run_command("left_delete")
+        vinimum.enter_sublime_mode()
+        self.view.run_command("reindent")
+
 # D
 class DeleteToEOLCommand(Command):
     def run(self):
@@ -106,6 +124,8 @@ commands = {
     "o": NewLineAfterCommand,
     "O": NewLineBeforeCommand,
     "x": RemoveCharacterCommand,
+    "s": SubstitudeCommand,
+    "S": SubstitudeLineCommand,
     "D": DeleteToEOLCommand,
     "C": ChangeToEOLCommand,
 }
