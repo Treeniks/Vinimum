@@ -40,7 +40,7 @@ The implementation of Vinimum differentiates between *commands*, *actions*, *mot
 - *motions*: define a movement from the current caret positon\
   `w`, `W`, `b`, `B`, `e`, `E`, `h`, `j`, `k`, `l`, `{`, `}`, `_`, `0`, `f`, `F`, `t`, `T`
 - *text_object_modifiers*: used as a modifier for *text_objects*\
-  `i` (inner), `a` (outer)
+  `i` (inner), `a` (around)
 - *text_objects*: define an area\
   `w`,`(`,`[`,`{`,`'`,`"`
 
@@ -121,7 +121,7 @@ The question could also be framed as "why did I create this plugin and not just 
 
    However, I don't always edit code by having both my hands on the keyboard and the editor in fullscreen. Sometimes, you're refactoring, or just hacking some code snippets together. Sometimes, editing code means copying code from an online resource to analyze, execute, slightly modify or learn from it. Mouse usage can slow one down during focused editing, but when editing code is secondary, having only one hand on the keyboard and the other on the mouse is not unusual. For those situations, Vim is about as bad of a choice as it gets. Being able to edit code the same way I would in vanilla Sublime is important to me. When selecting some text with the mouse that I want to delete, I don't want to have to find the `d` key with my left hand, instead I want to use my muscle memory to hit `backspace` like I did ever since using a computer for the first time.
 
-   Vim forces me into having both hands on the keyboard. It actively hinders and discourages the use of a mouse. Howver, **I want the functionality to not need a mouse, yet not be actively hindered when using one.**
+   Vim forces me into having both hands on the keyboard. It actively hinders and discourages the use of a mouse. However, **I want the functionality to not need a mouse, yet not be actively hindered when using one.**
 4. **Confusing Visual Modes**:\
    Every Vim plugin for any editor will have to make a decision on how to deal with Visual Mode and the editor's built in selection system.
 
