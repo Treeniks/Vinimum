@@ -43,7 +43,7 @@ The implementation of Vinimum differentiates between *commands*, *actions*, *mot
 - *motions*: define a movement from the current caret positon\
   `w`, `W`, `b`, `B`, `e`, `E`, `h`, `j`, `k`, `l`, `{`, `}`, `_`, `0`, `f`, `F`, `t`, `T`
 - *text_object_modifiers*: used as a modifier for *text_objects*\
-  `i` (inner), `a` (outer)
+  `i` (inner), `a` (around)
 - *text_objects*: define an area\
   `w`,`(`,`[`,`{`,`'`,`"`
 

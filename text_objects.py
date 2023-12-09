@@ -6,7 +6,7 @@ from enum import Enum
 
 class Modifier(Enum):
     INNER = 0
-    OUTER = 1
+    AROUND = 1
 
 class TextObject():
     def __init__(self, view, modifier):
@@ -16,13 +16,13 @@ class TextObject():
     def select(self):
         if self.modifier == Modifier.INNER:
             return self._select_inner()
-        elif self.modifier == Modifier.OUTER:
-            return self._select_outer()
+        elif self.modifier == Modifier.AROUND:
+            return self._select_around()
 
     def _select_inner(self):
         pass
 
-    def _select_outer(self):
+    def _select_around(self):
         pass
 
 def expand_to_whitespace(view, r):
@@ -42,7 +42,7 @@ class WordObject(TextObject):
     def _select_inner(self):
         self.view.run_command("expand_selection", {"to": "word"})
 
-    def _select_outer(self):
+    def _select_around(self):
         self.view.run_command("expand_selection", {"to": "word"})
         sel = self.view.sel()
         for r in sel:
@@ -56,7 +56,7 @@ class BracketsObject(TextObject):
     def _select_inner(self):
         self.view.run_command("expand_selection", {"to": "brackets", "brackets": self.character})
 
-    def _select_outer(self):
+    def _select_around(self):
         self.view.run_command("expand_selection", {"to": "brackets", "brackets": self.character})
         self.view.run_command("expand_selection", {"to": "brackets", "brackets": self.character})
 
@@ -87,7 +87,7 @@ class QuotesObject(TextObject):
         motion_backwards.move()
         motion_forwards.select()
 
-    def _select_outer(self):
+    def _select_around(self):
         motion_backwards = motions.FindInLineBackwardsMotion(self.view, self.character)
         motion_forwards = motions.FindInLineMotion(self.view, self.character)
 
@@ -106,7 +106,7 @@ class DoubleQuotesObject(QuotesObject):
 
 modifiers = {
     "i": Modifier.INNER,
-    "a": Modifier.OUTER,
+    "a": Modifier.AROUND,
 }
 
 text_objects = {
