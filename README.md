@@ -142,11 +142,11 @@ The question could also be framed as "why did I create this plugin and not just 
    Sometimes Vim Plugins cause problems when using panels or overlays, like the Command Palette. To combat this, Vinimum immediately jumps into Sublime Mode if it detects that a panel or overlay was opened. Note that because of [an issue with `show_overlay`](https://github.com/sublimehq/sublime_text/issues/2198), this is currently solved by remapping the default keybinds for `show_overlay`. If you have custom keybinds for overlays, please look into the `Default.sublime-keymap` file of this package to see how you can rebind your custom keybinds. An issue like this does not exist for panels.
 
 ## A note on special Unicode characters
-The implementation of Vinimum works by remapping keys to a `vnm_feed_input` command while in Command Mode. Thus, any command that takes an input while in Command Mode, like `r`, will not work with keys that are not explicitly set in the keymap file. Most important keys are remapped already, but some more unique keys like ä, á, ® and þ are not. This doesn't affect Sublime Mode, but a command like `r ä` will not work out of the box. To add more keys, simply add this to your `Default.sublime-keymap`:
+The implementation of Vinimum works by remapping keys to a `vnm_feed_input` command while in Command Mode. Thus, any command that takes an input while in Command Mode, like `r`, will not work with characters that are not explicitly set in the keymap file. Most characters are remapped already, but some more unique symbols like ñ and ¤ are not. This doesn't affect Sublime Mode, but a command like `r ñ` will not work out of the box. To add more keys, simply add this to your `Default.sublime-keymap`:
 ```jsonc
-{ "keys": ["ä"], "command": "vnm_feed_input", "args": {"key": "ä"}, "context": [{"key": "vnm.command_mode"}] },
+{ "keys": ["ñ"], "command": "vnm_feed_input", "args": {"key": "ñ"}, "context": [{"key": "vnm.command_mode"}] },
 ```
-and replace `ä` with the character in question.
+and replace `ñ` with the character in question.
 
 ## Known issues
 - Using the `a` command on an empty line will cause the cursor to jump to the next line.

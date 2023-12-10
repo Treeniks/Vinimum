@@ -128,4 +128,19 @@
     { "keys": [">"], "command": "vnm_feed_input", "args": {"key": ">"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["/"], "command": "vnm_feed_input", "args": {"key": "/"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["?"], "command": "vnm_feed_input", "args": {"key": "?"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["~"], "command": "vnm_feed_input", "args": {"key": "~"}, "context": [{"key": "vnm.command_mode"}] },
+
+    { "keys": ["€"], "command": "vnm_feed_input", "args": {"key": "€"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["«"], "command": "vnm_feed_input", "args": {"key": "«"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["»"], "command": "vnm_feed_input", "args": {"key": "»"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["¬"], "command": "vnm_feed_input", "args": {"key": "¬"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["¡"], "command": "vnm_feed_input", "args": {"key": "¡"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["¿"], "command": "vnm_feed_input", "args": {"key": "¿"}, "context": [{"key": "vnm.command_mode"}] },
+
+    { "keys": ["ä"], "command": "vnm_feed_input", "args": {"key": "ä"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["ü"], "command": "vnm_feed_input", "args": {"key": "ü"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["ö"], "command": "vnm_feed_input", "args": {"key": "ö"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["Ä"], "command": "vnm_feed_input", "args": {"key": "Ä"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["Ü"], "command": "vnm_feed_input", "args": {"key": "Ü"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["Ö"], "command": "vnm_feed_input", "args": {"key": "Ö"}, "context": [{"key": "vnm.command_mode"}] },
 ]
