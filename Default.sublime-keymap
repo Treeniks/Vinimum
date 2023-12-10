@@ -128,6 +128,7 @@
     { "keys": [">"], "command": "vnm_feed_input", "args": {"key": ">"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["/"], "command": "vnm_feed_input", "args": {"key": "/"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["?"], "command": "vnm_feed_input", "args": {"key": "?"}, "context": [{"key": "vnm.command_mode"}] },
+    { "keys": ["~"], "command": "vnm_feed_input", "args": {"key": "~"}, "context": [{"key": "vnm.command_mode"}] },
 
     { "keys": ["ä"], "command": "vnm_feed_input", "args": {"key": "ä"}, "context": [{"key": "vnm.command_mode"}] },
     { "keys": ["ü"], "command": "vnm_feed_input", "args": {"key": "ü"}, "context": [{"key": "vnm.command_mode"}] },
