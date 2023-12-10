@@ -112,7 +112,7 @@ The question could also be framed as "why did I create this plugin and not just 
 
 1. **Ambiguation of `escape`:**\
    Vim plugins will usually remap `escape` to `enter_command_mode`. However, this creates a lot of ambiguation as `escape` is already used in some places inside Sublime. Most importantly, it is the default key to close any kind of panel, overlay, auto complete or similar. When you have an auto complete suggestion and press `escape`, it is not clear if what you want is to hide the auto complete, or go into Command Mode. This ambiguation cannot simply be solved by defining one over the other, as a user will not always want one over the other, but instead makes that decision situationally. As such, the only way to fix this is to not use `escape`.
-2. **Redifinition of default keybinds:**\
+2. **Redefinition of default keybinds:**\
    Vim plugins typically rebind keybinds like `ctrl+r` (redo in Vim, goto symbol in Sublime) to use the Vim interpretation. They either rebind the keybind globally, which destroys any keybind knowledge and muscle memory one has built for Sublime, or they rebind the keybind only while in Command Mode, making the keybind unpredictable as it has different behaviour in different contexts.
 
    Either version I dislike. Sublime already has a keybind for redo, it's `ctrl+shift+z`, and while one may argue that to be a worse keybind, I would also argue that the goto symbol command of Sublime is useful enough to not be overwritten. Not to mention that `ctrl+shift+z` is certainly a more widely used default for redo. A user of Vinimum can still bind `ctrl+r` to whatever they want, but Vinimum itself will not impose such keybinds by default.
